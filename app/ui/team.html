@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <title>Create a new sprint</title>
+  <link rel="stylesheet" href="styles/team.css">
+</head>
+<body>
+  <div class="sprint-modal-container">
+  <div class="sprint-modal-title" id="sprint-modal-title">Create a new sprint</div>
+    <form class="sprint-modal-form" id="sprint-form" onsubmit="return false;">
+      <div class="sprint-modal-row">
+        <label class="sprint-modal-label" for="sprint-name">Sprint Name</label>
+        <input class="sprint-modal-input" id="sprint-name" type="text" placeholder="Sprint Name" />
+      </div>
+      <div class="sprint-modal-row">
+        <label class="sprint-modal-label">Dates</label>
+        <input class="sprint-modal-date" id="sprint-start" type="date" placeholder="From" />
+        <input class="sprint-modal-date" id="sprint-end" type="date" placeholder="To" />
+      </div>
+      <div style="display: flex; align-items: center; gap: 1em; margin-bottom: 0.5em;">
+        <label for="total-capacity-input" style="font-weight:bold; color:#fff;">Total capacity for all:</label>
+  <input id="total-capacity-input" type="number" placeholder="0" style="padding:0.5em; width:120px;" />
+  <label for="default-scrum-adhoc-input" style="font-weight:bold; color:#fff; margin-left:1em;">Default Scrum+Adhoc:</label>
+  <input id="default-scrum-adhoc-input" type="number" placeholder="0" style="padding:0.5em; width:120px;" />
+      </div>
+      <table class="sprint-modal-table" id="capacity-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Total capacity</th>
+            <th>Leaves</th>
+            <th>Scrum+Adhoc</th>
+            <th>Available capacity</th>
+            <th>Relative capacity to be planned</th>
+            <th>Spillover</th>
+            <th>Reason for spillover</th>
+            <th>Total sp committed</th>
+            <th>Tasks</th>
+          </tr>
+        </thead>
+        <tbody id="capacity-table-body">
+        </tbody>
+      </table>
+      <div style="display: flex; gap: 1em; align-items: center; margin-top: 1em;">
+        <button class="add-team-member-btn" type="button" id="add-team-member">Add team member</button>
+        <button class="add-team-member-btn" type="button" id="toggle-remove-member">Remove team member</button>
+      </div>
+      <div class="sprint-modal-actions">
+  <button class="sprint-cancel-btn" type="button" onclick="window.history.back()">cancel</button>
+  <button class="sprint-create-btn" type="submit" id="sprint-action-btn">create</button>
+      </div>
+    </form>
+  </div>
+    <script src="scripts/teamController.js"></script>
+  </script>
+</body>
+</html>

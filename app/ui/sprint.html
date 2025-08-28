@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+  <title>Sprint</title>
+  <link rel="stylesheet" href="styles/sprint.css">
+</head>
+<body>
+  
+  <div class="sprint-container">
+
+    <div class="sprint-header">
+
+      <div class="team-meta">
+              <span> <button id="back-btn" class="back-btn">&#8592;</button></span>
+        <div id="team-name" class="team-name"></div>
+  <button id="create-sprint-btn" class="create-sprint-btn">+ Create Sprint</button>
+  <button id="toggle-delete-sprint-btn" class="remove-member-btn" style="margin-left:10px;">Delete Sprint</button>
+      </div>
+      <div class="sprint-header-actions">
+        <div style="display: flex; flex-direction: column; gap: 8px;align-items: center;">
+          <div id="team-members" class="team-members"></div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <input id="member-name-input" type="text" placeholder="Enter member name" style="padding: 4px;" />
+            <button id="add-member-btn" class="add-member-btn">Add member</button>
+            <button id="toggle-remove-member-btn" class="remove-member-btn">Remove member</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="sprint-empty" class="sprint-empty">create Sprint to get started</div>
+
+    <!-- Sprint creation modal -->
+    <div id="sprint-modal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
+      <div style="background:#23242a; padding:2em; border-radius:10px; min-width:320px; max-width:90vw; display:flex; flex-direction:column; gap:1em; align-items:center;">
+        <h2 style="margin:0; color:#fff;">Create Sprint</h2>
+        <input id="sprint-name-input" type="text" placeholder="Sprint name" style="padding:0.5em; width:90%;" />
+        <input id="sprint-start-input" type="date" style="padding:0.5em; width:90%;" />
+        <input id="sprint-end-input" type="date" style="padding:0.5em; width:90%;" />
+        <input id="sprint-capacity-input" type="number" placeholder="Capacity planned" style="padding:0.5em; width:90%;" />
+        <div style="display:flex; gap:1em; margin-top:1em;">
+          <button id="sprint-save-btn" class="create-sprint-btn">Save</button>
+          <button id="sprint-cancel-btn" class="remove-member-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div id="sprint-table-container" style="display:none;">
+      <table class="sprint-table">
+        <thead>
+          <tr>
+            <th>Sprint name</th>
+            <th>Start date - end date</th>
+            <th>Capacity planned</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="sprint-table-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="scripts/sprintController.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sprint Planner - 1.0.0</title>
+  <link rel="stylesheet" href="styles/sprint.css">
+</head>
+<body>
+</body>
+</html>
