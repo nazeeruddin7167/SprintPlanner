@@ -148,7 +148,19 @@ function renderSprintsTable() {
 				}
 			};
 		});
-		// Export button functionality can be added later
+		// Export button functionality: call exportSprint.js
+	const { exportSprintToExcel } = window.require('./scripts/exportSprint.js');
+		sprintTableBody.querySelectorAll('.export-btn').forEach(btn => {
+			btn.onclick = async function() {
+				const idx = Number(btn.getAttribute('data-idx'));
+				try {
+					const filePath = await exportSprintToExcel(teamName, idx);
+					alert('Exported to: ' + filePath);
+				} catch (err) {
+					alert('Export failed: ' + err.message);
+				}
+			};
+		});
 	} else {
 		sprintTableContainer.style.display = 'none';
 		sprintEmpty.style.display = '';

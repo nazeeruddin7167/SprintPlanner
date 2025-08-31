@@ -133,55 +133,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const capacity = members.reduce((sum, m) => sum + (m.relativeCapacity || 0), 0);
     return { name, startDate, endDate, capacity, members };
   }
-  // --- Date input: dd/mm/yy formatting and open calendar on click ---
-  function formatDateToDDMMYY(dateStr) {
-    if (!dateStr) return '';
-    const [yyyy, mm, dd] = dateStr.split('-');
-    return `${dd}/${mm}/${yyyy.slice(2)}`;
-  }
-  function parseDDMMYYtoISO(val) {
-    // Accept dd/mm/yy or dd/mm/yyyy
-    const parts = val.split('/');
-    if (parts.length !== 3) return '';
-    let [dd, mm, yy] = parts;
-    if (yy.length === 2) yy = '20' + yy;
-    return `${yy}-${mm.padStart(2, '0')}-${dd.padStart(2, '0')}`;
-  }
-  function setupDateInput(id) {
-    const input = document.getElementById(id);
-    if (!input) return;
-    // Show formatted value on blur
-    input.addEventListener('blur', function() {
-      if (input.value) {
-        input.setAttribute('data-iso', input.value);
-        input.value = formatDateToDDMMYY(input.value);
-      }
-    });
-    // On focus, restore ISO value for calendar
-    input.addEventListener('focus', function() {
-      const iso = input.getAttribute('data-iso');
-      if (iso) input.value = iso;
-      // Open calendar
-      setTimeout(() => input.showPicker && input.showPicker(), 0);
-    });
-    // On input, if user types dd/mm/yy, convert to ISO
-    input.addEventListener('input', function(e) {
-      if (/\d{2}\/\d{2}\/\d{2,4}/.test(input.value)) {
-        const iso = parseDDMMYYtoISO(input.value);
-        if (iso) {
-          input.value = iso;
-          input.setAttribute('data-iso', iso);
-        }
-      }
-    });
-    // On page load, if value exists, format it
-    if (input.value) {
-      input.setAttribute('data-iso', input.value);
-      input.value = formatDateToDDMMYY(input.value);
-    }
-  }
-  setupDateInput('sprint-start');
-  setupDateInput('sprint-end');
+  // No custom formatting for native date input fields. Let browser handle date display and selection.
   // Auto-expand textarea height as user types
   function autoExpandTextarea(textarea) {
     textarea.style.height = 'auto';

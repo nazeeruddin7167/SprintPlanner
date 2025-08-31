@@ -18,9 +18,9 @@ function createWindow () {
     }
   });
 
-  if(isDev){
-    win.webContents.openDevTools();
-  }
+  // if(isDev){
+  //   win.webContents.openDevTools();
+  // }
   
   win.loadFile('app/ui/dashboard.html');
   win.once('ready-to-show', () => {
