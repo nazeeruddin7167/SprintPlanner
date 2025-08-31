@@ -1,3 +1,16 @@
+// Make clicking anywhere on the date input open the calendar
+document.addEventListener('DOMContentLoaded', function() {
+  const sprintStart = document.getElementById('sprint-start');
+  const sprintEnd = document.getElementById('sprint-end');
+  if (sprintStart) {
+    sprintStart.addEventListener('focus', function() { this.showPicker && this.showPicker(); });
+    sprintStart.addEventListener('click', function() { this.showPicker && this.showPicker(); });
+  }
+  if (sprintEnd) {
+    sprintEnd.addEventListener('focus', function() { this.showPicker && this.showPicker(); });
+    sprintEnd.addEventListener('click', function() { this.showPicker && this.showPicker(); });
+  }
+});
 // Team controller logic
 
 function getQueryParam(name) {
@@ -269,34 +282,49 @@ window.addEventListener('DOMContentLoaded', function() {
   // Cancel button: go back to sprint.html without saving
   document.querySelector('.sprint-cancel-btn').onclick = function(e) {
     e.preventDefault();
-    window.location.href = 'sprint.html?team=' + encodeURIComponent(teamName);
+    showLoading();
+    setTimeout(() => {
+      window.location.href = 'sprint.html?team=' + encodeURIComponent(teamName);
+    }, 100);
   };
 
   // Save members to JSON on create (optional, can be extended for full sprint save)
   document.querySelector('.sprint-create-btn').onclick = function(e) {
     e.preventDefault();
-    // Force blur on all name inputs to ensure latest values are captured
-    document.querySelectorAll('#capacity-table-body input[type="text"]').forEach(input => input.blur());
-    // Load teams and team
-    const data = fs.readFileSync(teamsPath, 'utf-8');
-    const teamsArr = JSON.parse(data);
-    const teamObj = teamsArr.find(t => t.name === teamName);
-    if (!teamObj) return;
-    if (!Array.isArray(teamObj.sprints)) teamObj.sprints = [];
-    const sprintData = getSprintFormData();
-  // Sync team's members array to exactly match the sprint table (additions and deletions)
-  const allNames = sprintData.members.map(m => (m.name || '').trim()).filter(Boolean);
-  teamObj.members = Array.from(new Set(allNames));
-    if (sprintIndex !== null && sprintIndex !== undefined && sprintIndex !== '' && !isNaN(Number(sprintIndex))) {
-      // Edit existing sprint
-      teamObj.sprints[Number(sprintIndex)] = sprintData;
-    } else {
-      // Add new sprint
-      teamObj.sprints.push(sprintData);
-    }
-    fs.writeFileSync(teamsPath, JSON.stringify(teamsArr, null, 2), 'utf-8');
-    window.location.href = 'sprint.html?team=' + encodeURIComponent(teamName);
+    showLoading();
+    setTimeout(() => {
+      // Force blur on all name inputs to ensure latest values are captured
+      document.querySelectorAll('#capacity-table-body input[type="text"]').forEach(input => input.blur());
+      // Load teams and team
+      const data = fs.readFileSync(teamsPath, 'utf-8');
+      const teamsArr = JSON.parse(data);
+      const teamObj = teamsArr.find(t => t.name === teamName);
+      if (!teamObj) return;
+      if (!Array.isArray(teamObj.sprints)) teamObj.sprints = [];
+      const sprintData = getSprintFormData();
+      // Sync team's members array to exactly match the sprint table (additions and deletions)
+      const allNames = sprintData.members.map(m => (m.name || '').trim()).filter(Boolean);
+      teamObj.members = Array.from(new Set(allNames));
+      if (sprintIndex !== null && sprintIndex !== undefined && sprintIndex !== '' && !isNaN(Number(sprintIndex))) {
+        // Edit existing sprint
+        teamObj.sprints[Number(sprintIndex)] = sprintData;
+      } else {
+        // Add new sprint
+        teamObj.sprints.push(sprintData);
+      }
+      fs.writeFileSync(teamsPath, JSON.stringify(teamsArr, null, 2), 'utf-8');
+      window.location.href = 'sprint.html?team=' + encodeURIComponent(teamName);
+    }, 100);
   };
+// Loading overlay helpers
+function showLoading() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+function hideLoading() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
   // If editing, preload values
   if (sprintIndex !== null && sprintIndex !== undefined && sprintIndex !== '' && !isNaN(Number(sprintIndex))) {
     try {

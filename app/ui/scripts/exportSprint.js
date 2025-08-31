@@ -13,10 +13,11 @@
 const fs = require('fs');
 const path = require('path');
 const ExcelJS = require('exceljs');
+const { ipcRenderer } = window.require('electron');
 
-const teamsPath = path.join(process.cwd(), 'app', 'data', 'teams.json');
+const teamsPath = path.join(process.cwd(), 'resources', 'app', 'app', 'data', 'teams.json');
 
-async function exportSprintToExcel(teamName, sprintIndex) {
+async function exportSprintToExcel(teamName, sprintIndex, exportFolder) {
 	try {
 		const data = fs.readFileSync(teamsPath, 'utf-8');
 		const teamsArr = JSON.parse(data);
@@ -151,7 +152,13 @@ async function exportSprintToExcel(teamName, sprintIndex) {
 		});
 	const safeTeam = teamObj.name.replace(/[^a-z0-9]/gi, '_');
 	const safeSprint = sprint.name.replace(/[^a-z0-9]/gi, '_');
-	const filePath = path.join(process.cwd(), `${safeTeam}_${safeSprint}.xlsx`);
+		let folder = exportFolder;
+		if (!folder) {
+			// Ask user for folder
+			folder = await ipcRenderer.invoke('select-export-folder');
+			if (!folder) throw new Error('Export cancelled by user');
+		}
+		const filePath = path.join(folder, `${safeTeam}_${safeSprint}.xlsx`);
 		await workbook.xlsx.writeFile(filePath);
 		return filePath;
 	} catch (err) {

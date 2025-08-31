@@ -87,7 +87,10 @@ document.getElementById('toggle-remove-member-btn').onclick = function() {
 }
 
 document.getElementById('back-btn').onclick = function() {
-	window.location.href = 'dashboard.html';
+	showLoading();
+	setTimeout(() => {
+		window.location.href = 'dashboard.html';
+	}, 100); // allow loading overlay to show
 };
 
 
@@ -154,6 +157,7 @@ function renderSprintsTable() {
 			btn.onclick = async function() {
 				const idx = Number(btn.getAttribute('data-idx'));
 				try {
+					// No folder passed, user will be prompted
 					const filePath = await exportSprintToExcel(teamName, idx);
 					alert('Exported to: ' + filePath);
 				} catch (err) {
@@ -185,16 +189,20 @@ document.getElementById('add-member-btn').onclick = function() {
 	const input = document.getElementById('member-name-input');
 	const name = input.value;
 	if (name && name.trim()) {
-		teams = loadTeams();
-		team = teams.find(t => t.name === teamName);
-		if (!team.members) team.members = [];
-		team.members.push(name.trim());
-		saveTeams(teams);
-		teams = loadTeams();
-		team = teams.find(t => t.name === teamName);
-		members = team && Array.isArray(team.members) ? team.members : [];
-		renderTeamInfo(team, members);
-		input.value = '';
+		showLoading();
+		setTimeout(() => {
+			teams = loadTeams();
+			team = teams.find(t => t.name === teamName);
+			if (!team.members) team.members = [];
+			team.members.push(name.trim());
+			saveTeams(teams);
+			teams = loadTeams();
+			team = teams.find(t => t.name === teamName);
+			members = team && Array.isArray(team.members) ? team.members : [];
+			renderTeamInfo(team, members);
+			input.value = '';
+			hideLoading();
+		}, 100);
 	}
 };
 
@@ -202,14 +210,27 @@ document.getElementById('add-member-btn').onclick = function() {
 
 // Remove member by index (used by remove buttons)
 function removeMemberByIndex(idx) {
-	teams = loadTeams();
-	team = teams.find(t => t.name === teamName);
-	if (!team.members) team.members = [];
-	team.members.splice(idx, 1);
-	saveTeams(teams);
-	teams = loadTeams();
-	team = teams.find(t => t.name === teamName);
-	members = team && Array.isArray(team.members) ? team.members : [];
-	renderTeamInfo(team, members);
+	showLoading();
+	setTimeout(() => {
+		teams = loadTeams();
+		team = teams.find(t => t.name === teamName);
+		if (!team.members) team.members = [];
+		team.members.splice(idx, 1);
+		saveTeams(teams);
+		teams = loadTeams();
+		team = teams.find(t => t.name === teamName);
+		members = team && Array.isArray(team.members) ? team.members : [];
+		renderTeamInfo(team, members);
+		hideLoading();
+	}, 100);
+}
+// Loading overlay helpers
+function showLoading() {
+	const overlay = document.getElementById('loading-overlay');
+	if (overlay) overlay.style.display = 'flex';
+}
+function hideLoading() {
+	const overlay = document.getElementById('loading-overlay');
+	if (overlay) overlay.style.display = 'none';
 }
 

@@ -99,9 +99,21 @@ function showTeamModal(callback) {
           card.style.cursor = 'pointer';
           card.addEventListener('click', (e) => {
             if (!deleteMode && !e.target.classList.contains('close-team-btn')) {
-              window.location.href = `sprint.html?team=${encodeURIComponent(team.name)}`;
+              showLoading();
+              setTimeout(() => {
+                window.location.href = `sprint.html?team=${encodeURIComponent(team.name)}`;
+              }, 100);
             }
           });
+// Loading overlay helpers
+function showLoading() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+function hideLoading() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
           // Add delete logic to the X button
           const closeBtn = card.querySelector('.close-team-btn');
           closeBtn.addEventListener('click', (e) => {

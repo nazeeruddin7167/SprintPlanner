@@ -1,4 +1,15 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron');
+// IPC handler to open folder picker dialog
+ipcMain.handle('select-export-folder', async (event) => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory'],
+    title: 'Select folder to export report',
+  });
+  if (result.canceled || !result.filePaths || !result.filePaths[0]) {
+    return null;
+  }
+  return result.filePaths[0];
+});
 const isDev = process.env.NODE_ENV !== 'production'
 
 const path = require('path');

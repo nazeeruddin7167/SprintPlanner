@@ -15,8 +15,10 @@
       <div class="team-meta">
               <span> <button id="back-btn" class="back-btn">&#8592;</button></span>
         <div id="team-name" class="team-name"></div>
-  <button id="create-sprint-btn" class="create-sprint-btn">+ Create Sprint</button>
-  <button id="toggle-delete-sprint-btn" class="remove-member-btn" style="margin-left:10px;">Delete Sprint</button>
+        <span>
+        <button id="create-sprint-btn" class="create-sprint-btn">+ Create Sprint</button>
+        <button id="toggle-delete-sprint-btn" class="remove-member-btn" style="margin-left:10px;">Delete Sprint</button>
+        </span>
       </div>
       <div class="sprint-header-actions">
         <div style="display: flex; flex-direction: column; gap: 8px;align-items: center;">
@@ -60,10 +62,24 @@
         </tbody>
       </table>
     </div>
+    <!-- Loading overlay -->
+    <div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+      <div style="background:#23242a; padding:2em; border-radius:10px; display:flex; flex-direction:column; align-items:center;">
+        <div class="loader" style="border: 8px solid #f3f3f3; border-top: 8px solid #1abc9c; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;"></div>
+        <span style="margin-top:1em; color:#fff;">Loading...</span>
+      </div>
+    </div>
   </div>
   <script src="scripts/sprintController.js"></script>
 </body>
 </html>
+
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 
 <!DOCTYPE html>
 <html>
